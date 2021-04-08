@@ -60,7 +60,7 @@ func (e *ValidationError) Error() string {
 func (e *ValidationError) NewResourceError(r cms.Resource) ResourceError {
 	return ResourceError{
 		Code:     e.Code(),
+		Err:      e,
 		Resource: r,
-		Wrapped:  e,
 	}
 }

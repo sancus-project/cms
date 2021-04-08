@@ -9,15 +9,15 @@ import (
 
 type ResourceError struct {
 	Code     int
+	Err      error
 	Resource cms.Resource
-	Wrapped  error
 }
 
 func (e ResourceError) Status() int {
 	var code int
 
 	if e.Code == 0 {
-		if e.Wrapped == nil {
+		if e.Err == nil {
 			code = http.StatusOK
 		} else {
 			code = http.StatusInternalServerError
@@ -30,7 +30,7 @@ func (e ResourceError) Status() int {
 }
 
 func (e ResourceError) Unwrap() error {
-	return e.Wrapped
+	return e.Err
 }
 
 func (e ResourceError) String() string {
