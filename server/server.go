@@ -1,4 +1,4 @@
-package cms
+package server
 
 // CMS Server
 type Server struct{}
