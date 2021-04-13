@@ -9,6 +9,15 @@ import (
 
 type View struct {
 	config cms.ViewConfig
+	server cms.Server
+}
+
+func NewView(s cms.Server, cfg cms.ViewConfig) *View {
+	v := &View{
+		config: cfg,
+		server: s,
+	}
+	return v
 }
 
 func (v *View) Middleware(next http.Handler) http.Handler {
