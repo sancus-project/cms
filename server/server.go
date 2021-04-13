@@ -1,8 +1,52 @@
 package server
 
-// CMS Server
-type Server struct{}
+import (
+	"context"
 
+	"go.sancus.dev/cms/os"
+)
+
+// CMS Server
+type Server struct {
+	Root  string
+	Cache string
+
+	root  os.Filesystem
+	cache os.Filesystem
+}
+
+func (s *Server) Connect(ctx context.Context) error {
+	if s.root != nil || s.cache != nil {
+		return os.ErrBusy
+	}
+
+	root, err := os.NewFilesystem(ctx, s.Root)
+	if err != nil {
+		return err
+	}
+
+	cache, err := os.NewFilesystem(ctx, s.Cache)
+	if err != nil {
+		defer root.Close()
+		return err
+	}
+
+	s.root = root
+	s.cache = cache
+
+	return nil
+}
+
+func (s *Server) Close() error {
+	root, cache := s.root, s.cache
+	s.root, s.cache = nil, nil
+
+	defer cache.Close()
+	defer root.Close()
+	return nil
+}
+
+// Server Options
 func NewServer(options ...ServerOption) (*Server, error) {
 	s := &Server{}
 
@@ -13,7 +57,7 @@ func NewServer(options ...ServerOption) (*Server, error) {
 }
 
 // Options
-type ServerOption interface{
+type ServerOption interface {
 	IsServerOption() ServerOption
 }
 
