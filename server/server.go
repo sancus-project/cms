@@ -39,10 +39,16 @@ func (s *Server) Connect(ctx context.Context) error {
 
 func (s *Server) Close() error {
 	root, cache := s.root, s.cache
-	s.root, s.cache = nil, nil
 
-	defer cache.Close()
-	defer root.Close()
+	if cache != nil {
+		defer cache.Close()
+		s.cache = nil
+	}
+	if root != nil {
+		defer root.Close()
+		s.root = nil
+	}
+
 	return nil
 }
 
