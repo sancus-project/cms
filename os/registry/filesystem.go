@@ -7,6 +7,9 @@ import (
 )
 
 type Filesystem interface {
+	Root() string
+	Protocol() string
+
 	Close() error
 }
 

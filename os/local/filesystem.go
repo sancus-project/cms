@@ -109,6 +109,14 @@ func (v *Filesystem) Close() error {
 	return nil
 }
 
+func (v *Filesystem) Root() string {
+	return v.root
+}
+
+func (v *Filesystem) Protocol() string {
+	return "file"
+}
+
 func init() {
 	registry.RegisterFilesystem("", NewFilesystem)
 	registry.RegisterFilesystem("local:", NewFilesystem)
