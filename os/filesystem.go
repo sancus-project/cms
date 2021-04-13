@@ -3,13 +3,12 @@ package os
 import (
 	"context"
 
-	"go.sancus.dev/cms/os/posix"
+	_ "go.sancus.dev/cms/os/posix"
+	"go.sancus.dev/cms/os/registry"
 )
 
-type Filesystem interface {
-	Close() error
-}
+type Filesystem = registry.Filesystem
 
 func NewFilesystem(ctx context.Context, path string) (Filesystem, error) {
-	return posix.NewFilesystem(ctx, path)
+	return registry.NewFilesystem(ctx, path)
 }
