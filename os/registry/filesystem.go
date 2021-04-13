@@ -22,10 +22,6 @@ func RegisterFilesystem(prefix string, f FilesystemConstructor) error {
 		return err
 	}
 
-	if len(prefix) > 0 {
-		prefix = prefix + ":"
-	}
-
 	filesystems[prefix] = f
 	return nil
 }

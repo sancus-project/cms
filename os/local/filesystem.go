@@ -26,6 +26,11 @@ type Filesystem struct {
 func NewFilesystem(ctx context.Context, root string) (registry.Filesystem, error) {
 
 	// validate root
+	root, err := CleanRoot(root)
+	if err != nil {
+		return nil, err
+	}
+
 	dents, err := os.ReadDir(root)
 	if err != nil {
 		return nil, err
@@ -106,4 +111,6 @@ func (v *Filesystem) Close() error {
 
 func init() {
 	registry.RegisterFilesystem("", NewFilesystem)
+	registry.RegisterFilesystem("local:", NewFilesystem)
+	registry.RegisterFilesystem("file://", NewFilesystem)
 }
