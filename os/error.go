@@ -1,9 +1,23 @@
 package os
 
 import (
+	"fmt"
 	"syscall"
 )
 
 const (
 	EBUSY = syscall.EBUSY
 )
+
+type FileError struct {
+	Name  string
+	Errno syscall.Errno
+}
+
+func (err FileError) Error() string {
+	return fmt.Sprintf("%s: %s", err.Name, err.Errno.Error())
+}
+
+func (err FileError) Unwrap() error {
+	return err.Errno
+}
