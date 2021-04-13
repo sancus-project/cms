@@ -17,7 +17,7 @@ type Server struct {
 
 func (s *Server) Connect(ctx context.Context) error {
 	if s.root != nil || s.cache != nil {
-		return os.ErrBusy
+		return os.EBUSY
 	}
 
 	root, err := os.NewFilesystem(ctx, s.Root)
