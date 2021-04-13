@@ -3,7 +3,7 @@ package os
 import (
 	"context"
 
-	_ "go.sancus.dev/cms/os/posix"
+	_ "go.sancus.dev/cms/os/local"
 	"go.sancus.dev/cms/os/registry"
 )
 
