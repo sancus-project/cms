@@ -44,7 +44,7 @@ func (v *View) Middleware(next http.Handler) http.Handler {
 
 func (v *View) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if err := v.Handler(w, r); err != nil {
-		panic(err)
+		v.HandleError(w, r, err)
 	}
 }
 
