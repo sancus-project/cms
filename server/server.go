@@ -64,14 +64,3 @@ func NewServer(root, cache string, options ...ServerOption) (*Server, error) {
 
 	return s, nil
 }
-
-// Options
-type ServerOption interface {
-	IsServerOption() ServerOption
-}
-
-type serverOption struct{}
-
-func (s *serverOption) IsServerOption() ServerOption {
-	return s
-}
