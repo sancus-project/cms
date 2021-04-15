@@ -6,7 +6,8 @@ import (
 )
 
 const (
-	EBUSY = syscall.EBUSY
+	EBUSY  = syscall.EBUSY
+	EINVAL = syscall.EINVAL
 )
 
 type FileError struct {
@@ -20,4 +21,9 @@ func (err FileError) Error() string {
 
 func (err FileError) Unwrap() error {
 	return err.Errno
+}
+
+// EINVAL
+func ErrInvalid(pathname string) error {
+	return &FileError{pathname, syscall.EINVAL}
 }
