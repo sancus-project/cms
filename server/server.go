@@ -31,8 +31,8 @@ func (s *Server) Connect(ctx context.Context) error {
 		return err
 	}
 
-	s.root = root
-	s.cache = cache
+	s.root, s.Root = root, root.Root()
+	s.cache, s.Cache = cache, cache.Root()
 
 	return nil
 }
@@ -53,8 +53,11 @@ func (s *Server) Close() error {
 }
 
 // Server Options
-func NewServer(options ...ServerOption) (*Server, error) {
-	s := &Server{}
+func NewServer(root, cache string, options ...ServerOption) (*Server, error) {
+	s := &Server{
+		Root:  root,
+		Cache: cache,
+	}
 
 	for _ = range options {
 	}
