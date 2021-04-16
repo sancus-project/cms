@@ -5,6 +5,8 @@ import (
 	"net/http"
 )
 
+type RequestHandler func(http.ResponseWriter, *http.Request) error
+
 type View interface {
 	http.Handler
 
@@ -27,6 +29,10 @@ type ViewConfig struct {
 	PingHandler    http.Handler
 	Sitemap        string // optional per view
 	SitemapHandler http.Handler
+
+	ResourceErrorHandler ResourceErrorHandler
+	ErrorHandler         ErrorHandler
+	PanicHandler         PanicHandler
 
 	Index    string // default page
 	ReadOnly bool   // storage can't be modified through this View
