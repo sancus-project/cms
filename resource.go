@@ -6,30 +6,30 @@ import (
 
 // GET
 type Resource interface {
-	Methods() []string
 	MimeTypes() []string
-	Render(w http.ResponseWriter, r *http.Request) error
+	Get(http.ResponseWriter, *http.Request) error
 }
 
 // HEAD
 type PeekableResource interface {
+	Resource
 	Head(w http.ResponseWriter, r *http.Request) error
 }
 
 // PUT
 type CreatableResource interface {
 	Resource
-	Put(r *http.Request) error
+	Put(http.ResponseWriter, *http.Request) error
 }
 
 // DELETE
 type DeletableResource interface {
 	Resource
-	Delete() error
+	Delete(http.ResponseWriter, *http.Request) error
 }
 
 // POST
 type SubmitableResource interface {
 	Resource
-	Post(r *http.Request) error
+	Post(http.ResponseWriter, *http.Request) error
 }
