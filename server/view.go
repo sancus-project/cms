@@ -5,7 +5,7 @@ import (
 	"go.sancus.dev/cms/view"
 )
 
+// Spawn cms.View from Server
 func (s *Server) View(path string) cms.View {
-	v := &view.View{}
-	return v
+	return view.NewView(s, s.ViewConfig)
 }

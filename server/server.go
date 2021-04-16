@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 
+	"go.sancus.dev/cms"
 	"go.sancus.dev/cms/os"
 )
 
@@ -10,6 +11,8 @@ import (
 type Server struct {
 	Root  string
 	Cache string
+
+	ViewConfig cms.ViewConfig
 
 	root  os.Filesystem
 	cache os.Filesystem
