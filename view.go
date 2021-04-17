@@ -39,42 +39,58 @@ type ViewConfig struct {
 	ReadOnly bool   // storage can't be modified through this View
 }
 
-func (c *ViewConfig) SetDefaults() error {
-	// file editor
-	if len(c.Edit) == 0 {
-		c.EditHandler = nil
-	} else if c.EditHandler == nil {
-		c.Edit = ""
-	} else if c.Edit[0] != '/' {
-		c.Edit = "/" + c.Edit
+// Set View's File Editor
+func (c *ViewConfig) SetEditHandler(path string, handler http.Handler) error {
+	if path == "" || handler == nil {
+		path = ""
+		handler = nil
+	} else if path[0] != '/' {
+		path = "/" + path
 	}
 
-	// file manager
-	if len(c.Files) == 0 {
-		c.FilesHandler = nil
-	} else if c.FilesHandler == nil {
-		c.Files = ""
-	} else if c.Files[0] != '/' {
-		c.Files = "/" + c.Files
+	c.Edit = path
+	c.EditHandler = handler
+	return nil
+}
+
+// Set View's File Manager
+func (c *ViewConfig) SetFilesHandler(path string, handler http.Handler) error {
+	if path == "" || handler == nil {
+		path = ""
+		handler = nil
+	} else if path[0] != '/' {
+		path = "/" + path
 	}
 
-	// heartbeat
-	if len(c.Ping) == 0 {
-		c.PingHandler = nil
-	} else if c.PingHandler == nil {
-		c.Ping = ""
-	} else if c.Ping[0] != '/' {
-		c.Ping = "/" + c.Ping
+	c.Files = path
+	c.FilesHandler = handler
+	return nil
+}
+
+// Set View's Ping Handler
+func (c *ViewConfig) SetPingHandler(path string, handler http.Handler) error {
+	if path == "" || handler == nil {
+		path = ""
+		handler = nil
+	} else if path[0] != '/' {
+		path = "/" + path
 	}
 
-	// sitemap
-	if len(c.Sitemap) == 0 {
-		c.SitemapHandler = nil
-	} else if c.SitemapHandler == nil {
-		c.Sitemap = ""
-	} else if c.Sitemap[0] != '/' {
-		c.Sitemap = "/" + c.Sitemap
+	c.Ping = path
+	c.PingHandler = handler
+	return nil
+}
+
+// Set View's Sitemap Handler
+func (c *ViewConfig) SetSitemapHandler(path string, handler http.Handler) error {
+	if path == "" || handler == nil {
+		path = ""
+		handler = nil
+	} else if path[0] != '/' {
+		path = "/" + path
 	}
 
+	c.Sitemap = path
+	c.SitemapHandler = handler
 	return nil
 }

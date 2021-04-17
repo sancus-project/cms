@@ -55,14 +55,16 @@ func (s *Server) Close() error {
 	return nil
 }
 
-// Server Options
 func NewServer(root, cache string, options ...ServerOption) (*Server, error) {
 	s := &Server{
 		Root:  root,
 		Cache: cache,
 	}
 
-	for _ = range options {
+	for _, opt := range options {
+		if err := opt.ApplyOption(s); err != nil {
+			return nil, err
+		}
 	}
 
 	return s, nil
