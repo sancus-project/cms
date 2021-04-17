@@ -17,9 +17,10 @@ type View interface {
 }
 
 type ViewConfig struct {
-	GetUser     func(ctx context.Context) User
-	SetResource func(ctx context.Context, res Resource) (context.Context, error)
-	GetResource func(ctx context.Context) Resource
+	GetUser      func(ctx context.Context) User
+	GetRoutePath func(ctx context.Context) string
+	SetResource  func(ctx context.Context, res Resource) (context.Context, error)
+	GetResource  func(ctx context.Context) Resource
 
 	Edit           string // per resource
 	EditHandler    http.Handler
