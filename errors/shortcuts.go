@@ -1,9 +1,13 @@
 package errors
 
 import (
-	"net/http"
+	"go.sancus.dev/cms"
+)
+
+type (
+	HandlerError = cms.HandlerError
 )
 
 var (
-	ErrNotFound = &ResourceError{Code: http.StatusNotFound}
+	ErrNotFound = cms.ErrNotFound
 )

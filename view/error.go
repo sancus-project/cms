@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"go.sancus.dev/cms"
-	"go.sancus.dev/cms/errors"
 )
 
 func (v View) HandleResourceError(w http.ResponseWriter, r *http.Request, err cms.Error) {
@@ -35,7 +34,7 @@ func (v View) HandleError(w http.ResponseWriter, r *http.Request, err error) {
 
 	log.Printf("%T.HandleError: %s%s: %T: %s", v, r.Host, r.URL.Path, err, err.Error())
 
-	e := &errors.ResourceError{Code: http.StatusInternalServerError, Err: err}
+	e := &cms.HandlerError{Code: http.StatusInternalServerError, Err: err}
 	v.HandleResourceError(w, r, e)
 }
 
