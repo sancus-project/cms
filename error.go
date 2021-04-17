@@ -57,6 +57,17 @@ func (err HandlerError) Error() string {
 	return err.String()
 }
 
+func (err HandlerError) ServeHTTP(w http.ResponseWriter, _ *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("X-Content-Type-Options", "nosniff")
+	w.WriteHeader(err.Status())
+
+	fmt.Fprintln(w, err)
+	if e := err.Unwrap(); e != nil {
+		fmt.Fprintln(w, "", e)
+	}
+}
+
 // Error Handlers
 type ResourceErrorHandler func(http.ResponseWriter, *http.Request, Error)
 type ErrorHandler func(http.ResponseWriter, *http.Request, error)
