@@ -44,6 +44,8 @@ func (c *ViewConfig) SetDefaults() error {
 		c.EditHandler = nil
 	} else if c.EditHandler == nil {
 		c.Edit = ""
+	} else if c.Edit[0] != '/' {
+		c.Edit = "/" + c.Edit
 	}
 
 	// file manager
@@ -51,6 +53,8 @@ func (c *ViewConfig) SetDefaults() error {
 		c.FilesHandler = nil
 	} else if c.FilesHandler == nil {
 		c.Files = ""
+	} else if c.Files[0] != '/' {
+		c.Files = "/" + c.Files
 	}
 
 	// heartbeat
@@ -58,6 +62,8 @@ func (c *ViewConfig) SetDefaults() error {
 		c.PingHandler = nil
 	} else if c.PingHandler == nil {
 		c.Ping = ""
+	} else if c.Ping[0] != '/' {
+		c.Ping = "/" + c.Ping
 	}
 
 	// sitemap
@@ -65,6 +71,8 @@ func (c *ViewConfig) SetDefaults() error {
 		c.SitemapHandler = nil
 	} else if c.SitemapHandler == nil {
 		c.Sitemap = ""
+	} else if c.Sitemap[0] != '/' {
+		c.Sitemap = "/" + c.Sitemap
 	}
 
 	return nil
