@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-type RequestHandler func(http.ResponseWriter, *http.Request) error
+type Handler func(http.ResponseWriter, *http.Request) error
 
 type View interface {
 	http.Handler
@@ -23,24 +23,23 @@ type ViewConfig struct {
 	GetResource  func(ctx context.Context) Resource
 
 	Edit           string // per resource
-	EditHandler    http.Handler
+	EditHandler    Handler
 	Files          string // per directory
-	FilesHandler   http.Handler
+	FilesHandler   Handler
 	Ping           string // optional per view
-	PingHandler    http.Handler
+	PingHandler    Handler
 	Sitemap        string // optional per view
-	SitemapHandler http.Handler
+	SitemapHandler Handler
 
-	ResourceErrorHandler ResourceErrorHandler
-	ErrorHandler         ErrorHandler
-	PanicHandler         PanicHandler
+	ErrorHandler ErrorHandler
+	PanicHandler PanicHandler
 
 	Index    string // default page
 	ReadOnly bool   // storage can't be modified through this View
 }
 
 // Set View's File Editor
-func (c *ViewConfig) SetEditHandler(path string, handler http.Handler) error {
+func (c *ViewConfig) SetEditHandler(path string, handler Handler) error {
 	if path == "" || handler == nil {
 		path = ""
 		handler = nil
@@ -54,7 +53,7 @@ func (c *ViewConfig) SetEditHandler(path string, handler http.Handler) error {
 }
 
 // Set View's File Manager
-func (c *ViewConfig) SetFilesHandler(path string, handler http.Handler) error {
+func (c *ViewConfig) SetFilesHandler(path string, handler Handler) error {
 	if path == "" || handler == nil {
 		path = ""
 		handler = nil
@@ -68,7 +67,7 @@ func (c *ViewConfig) SetFilesHandler(path string, handler http.Handler) error {
 }
 
 // Set View's Ping Handler
-func (c *ViewConfig) SetPingHandler(path string, handler http.Handler) error {
+func (c *ViewConfig) SetPingHandler(path string, handler Handler) error {
 	if path == "" || handler == nil {
 		path = ""
 		handler = nil
@@ -82,7 +81,7 @@ func (c *ViewConfig) SetPingHandler(path string, handler http.Handler) error {
 }
 
 // Set View's Sitemap Handler
-func (c *ViewConfig) SetSitemapHandler(path string, handler http.Handler) error {
+func (c *ViewConfig) SetSitemapHandler(path string, handler Handler) error {
 	if path == "" || handler == nil {
 		path = ""
 		handler = nil

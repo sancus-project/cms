@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"net/http"
 
 	"go.sancus.dev/cms"
 )
@@ -13,7 +12,7 @@ type ServerOption interface {
 }
 
 type serverOption struct {
-	apply func(*Server)error
+	apply func(*Server) error
 }
 
 func (opt serverOption) ApplyOption(s *Server) error {
@@ -72,38 +71,30 @@ func SetGetResource(getResource func(context.Context) cms.Resource) ServerOption
 }
 
 // Set Server's default File editor
-func SetEditHandler(path string, handler http.Handler) ServerOption {
+func SetEditHandler(path string, handler cms.Handler) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.ViewConfig.SetEditHandler(path, handler)
 	})
 }
 
 // Set Server's default File manager
-func SetFilesHandler(path string, handler http.Handler) ServerOption {
+func SetFilesHandler(path string, handler cms.Handler) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.ViewConfig.SetFilesHandler(path, handler)
 	})
 }
 
 // Set Server's default Heartbeat handler
-func SetPingHandler(path string, handler http.Handler) ServerOption {
+func SetPingHandler(path string, handler cms.Handler) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.ViewConfig.SetPingHandler(path, handler)
 	})
 }
 
 // Set Server's default Sitemap handler
-func SetSitemapHandler(path string, handler http.Handler) ServerOption {
+func SetSitemapHandler(path string, handler cms.Handler) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.ViewConfig.SetSitemapHandler(path, handler)
-	})
-}
-
-// Set Server's default ResourceError Handler
-func SetResourceErrorHandler(handler cms.ResourceErrorHandler) ServerOption {
-	return ServerOptionFunc(func(s *Server) error {
-		s.ViewConfig.ResourceErrorHandler = handler
-		return nil
 	})
 }
 

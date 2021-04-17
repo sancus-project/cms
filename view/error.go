@@ -7,25 +7,7 @@ import (
 	"go.sancus.dev/cms"
 )
 
-func (v View) HandleResourceError(w http.ResponseWriter, r *http.Request, err cms.Error) {
-
-	if h := v.config.ResourceErrorHandler; h != nil {
-		h(w, r, err)
-		return
-	}
-
-	log.Printf("%T.HandleResourceError: %s%s: %v: %s", v, r.Host, r.URL.Path, err.Status(), err.Error())
-
-	w.WriteHeader(err.Status())
-	w.Write([]byte(err.Error()))
-}
-
 func (v View) HandleError(w http.ResponseWriter, r *http.Request, err error) {
-
-	if e, ok := err.(cms.Error); ok {
-		v.HandleResourceError(w, r, e)
-		return
-	}
 
 	if h := v.config.ErrorHandler; h != nil {
 		h(w, r, err)
@@ -34,8 +16,22 @@ func (v View) HandleError(w http.ResponseWriter, r *http.Request, err error) {
 
 	log.Printf("%T.HandleError: %s%s: %T: %s", v, r.Host, r.URL.Path, err, err.Error())
 
-	e := &cms.HandlerError{Code: http.StatusInternalServerError, Err: err}
-	v.HandleResourceError(w, r, e)
+	// error knows how to render itself
+	h, ok := err.(http.Handler)
+	if !ok {
+		var code int
+
+		// but if it doesn't, wrap in HandlerError{}
+		if e, ok := err.(cms.Error); ok {
+			code = e.Status()
+		} else {
+			code = http.StatusInternalServerError
+		}
+
+		h = &cms.HandlerError{Code: code, Err: err}
+	}
+
+	h.ServeHTTP(w, r)
 }
 
 func (v View) HandlePanic(w http.ResponseWriter, r *http.Request, rvr interface{}) {

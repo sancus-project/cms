@@ -69,6 +69,5 @@ func (err HandlerError) ServeHTTP(w http.ResponseWriter, _ *http.Request) {
 }
 
 // Error Handlers
-type ResourceErrorHandler func(http.ResponseWriter, *http.Request, Error)
 type ErrorHandler func(http.ResponseWriter, *http.Request, error)
 type PanicHandler func(http.ResponseWriter, *http.Request, interface{})

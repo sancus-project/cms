@@ -41,10 +41,8 @@ func (v *View) Middleware(next http.Handler) http.Handler {
 					next.ServeHTTP(w, r)
 					return
 				}
-				v.HandleResourceError(w, r, e)
-			} else {
-				v.HandleError(w, r, err)
 			}
+			v.HandleError(w, r, err)
 		}
 	}
 
