@@ -2,23 +2,22 @@ package server
 
 import (
 	"go.sancus.dev/cms"
-	"go.sancus.dev/cms/os/utils"
 )
 
 type Sandbox struct {
-	root   string
+	root   *Directory
 	server *Server
 }
 
 // Spawn Sandbox from Server
 func (s *Server) Chroot(path string) (cms.Server, error) {
-	path, err := utils.ValidPath(path)
+	dir, err := s.MkdirAll(path)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &Sandbox{
-		root:   path,
+		root:   dir,
 		server: s,
 	}
 
@@ -27,13 +26,13 @@ func (s *Server) Chroot(path string) (cms.Server, error) {
 
 // Spawn Sandbox from Sandbox
 func (s *Sandbox) Chroot(path string) (cms.Server, error) {
-	path, err := utils.ValidPath(path)
+	dir, err := s.MkdirAll(path)
 	if err != nil {
 		return nil, err
 	}
 
 	v := &Sandbox{
-		root:   path,
+		root:   dir,
 		server: s.server,
 	}
 
