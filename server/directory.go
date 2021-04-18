@@ -1,6 +1,7 @@
 package server
 
 import (
+	"go.sancus.dev/cms"
 	"go.sancus.dev/cms/os"
 	"go.sancus.dev/cms/os/utils"
 )
@@ -10,20 +11,30 @@ type Directory struct {
 	fullpath string
 	data     os.Directory
 	cache    os.Directory
-	server   *Server
+	root     cms.Server
 }
 
 func (d *Directory) Path() string {
 	return d.path
 }
 
-func (s *Server) MkdirAll(path string) (*Directory, error) {
+func (d *Directory) MkdirAll(path string) (cms.Directory, error) {
+	// Allow Relative paths, within the same root
+	path, err := utils.ValidPath(os.Join(d.path, path))
+	if err != nil {
+		return nil, err
+	}
+
+	return d.root.MkdirAll(path)
+}
+
+func (s *Server) mkdirAll(path string) (*Directory, error) {
 	path, err := utils.ValidPath(path)
 	if err != nil {
 		return nil, err
 	}
 
-	dir, err := s.root.MkdirAll(path)
+	data, err := s.root.MkdirAll(path)
 	if err != nil {
 		return nil, err
 	}
@@ -36,28 +47,34 @@ func (s *Server) MkdirAll(path string) (*Directory, error) {
 	d := &Directory{
 		path:     path,
 		fullpath: path,
-		data:     dir,
+		data:     data,
 		cache:    cache,
-		server:   s,
+		root:     s,
 	}
 
 	return d, nil
 }
 
-func (s *Sandbox) MkdirAll(path string) (*Directory, error) {
+func (s *Server) MkdirAll(path string) (cms.Directory, error) {
+	d, err := s.mkdirAll(path)
+	return d, err
+}
+
+func (s *Sandbox) MkdirAll(path string) (cms.Directory, error) {
 	path, err := utils.ValidPath(path)
 	if err != nil {
 		return nil, err
 	}
 
 	// ask Server to create the directory
-	d, err := s.server.MkdirAll(os.Join(s.root.Path(), path))
+	d, err := s.server.mkdirAll(os.Join(s.root.Path(), path))
 	if err != nil {
 		return nil, err
 	}
 
 	// but make its Path() relative to the Sandbox
 	d.path = path
+	d.root = s
 
 	return d, nil
 }

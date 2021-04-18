@@ -5,7 +5,7 @@ import (
 )
 
 type Sandbox struct {
-	root   *Directory
+	root   cms.Directory
 	server *Server
 }
 
