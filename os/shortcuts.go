@@ -1,9 +1,9 @@
 package os
 
 import (
-	"path"
+	"path/filepath"
 )
 
 func Join(d ...string) string {
-	return path.Join(d...)
+	return filepath.Join(d...)
 }

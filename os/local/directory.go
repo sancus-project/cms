@@ -2,7 +2,7 @@ package local
 
 import (
 	"os"
-	"path"
+	"path/filepath"
 
 	"go.sancus.dev/cms/os/registry"
 )
@@ -20,12 +20,12 @@ func (d Directory) Path() string {
 	return d.path
 }
 
-func (fs *Filesystem) MkdirAll(pathname string) (registry.Directory, error) {
+func (fs *Filesystem) MkdirAll(path string) (registry.Directory, error) {
 	var err error
 	var mode = NewDirectoryMode
 
 	// validate path
-	if pathname, err = CleanRoot(pathname); err != nil {
+	if path, err = CleanRoot(path); err != nil {
 		return nil, err
 	}
 
@@ -33,8 +33,8 @@ func (fs *Filesystem) MkdirAll(pathname string) (registry.Directory, error) {
 	defer fs.mu.Unlock()
 
 	d := &Directory{
-		path:   pathname,
-		actual: path.Join(fs.root, pathname),
+		path:   path,
+		actual: filepath.Join(fs.root, path),
 	}
 
 	if err = os.MkdirAll(d.actual, mode); err != nil {
