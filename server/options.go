@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"net/http"
 
 	"go.sancus.dev/cms"
 )
@@ -41,14 +42,14 @@ func SetGetUser(getUser func(context.Context) cms.User) ServerOption {
 }
 
 // Set ViewConfig.GetRoutePath
-func (s *Server) SetGetRoutePath(getRoutePath func(context.Context) string) error {
+func (s *Server) SetGetRoutePath(getRoutePath func(r *http.Request) string) error {
 	if s != nil {
 		s.ViewConfig.GetRoutePath = getRoutePath
 	}
 	return nil
 }
 
-func SetGetRoutePath(getRoutePath func(context.Context) string) ServerOption {
+func SetGetRoutePath(getRoutePath func(r *http.Request) string) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.SetGetRoutePath(getRoutePath)
 	})

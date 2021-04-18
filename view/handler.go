@@ -11,7 +11,7 @@ func (v *View) Handler(w http.ResponseWriter, r *http.Request) error {
 	var path string
 
 	if v.config.GetRoutePath != nil {
-		path = v.config.GetRoutePath(r.Context())
+		path = v.config.GetRoutePath(r)
 	} else {
 		path = r.URL.Path
 	}
