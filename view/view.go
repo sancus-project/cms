@@ -12,12 +12,30 @@ type View struct {
 	server cms.Directory
 }
 
-func NewView(s cms.Directory, cfg cms.ViewConfig) *View {
+func NewView(s cms.Directory, cfg cms.ViewConfig) (cms.View, error) {
 	v := &View{
 		config: cfg,
 		server: s,
 	}
-	return v
+
+	if err := v.SetDefaults(); err != nil {
+		return nil, err
+	}
+
+	return v, nil
+}
+
+func (v *View) SetDefaults() error {
+	cfg := &v.config
+
+	// GetRoutePath
+	if cfg.GetRoutePath == nil {
+		cfg.GetRoutePath = func(r *http.Request) string {
+			return r.URL.Path
+		}
+	}
+
+	return nil
 }
 
 func (v *View) Middleware(next http.Handler) http.Handler {

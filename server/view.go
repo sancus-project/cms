@@ -9,20 +9,30 @@ import (
 
 // Spawn cms.View from Server
 func (s *Server) View(path string) cms.View {
-	v, err := s.Chroot(path)
+	dir, err := s.Chroot(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return view.NewView(v, s.ViewConfig)
+	v, err := view.NewView(dir, s.ViewConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return v
 }
 
 // Spawn cms.View from Sandbox
 func (s *Sandbox) View(path string) cms.View {
-	v, err := s.Chroot(path)
+	dir, err := s.Chroot(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return view.NewView(v, s.server.ViewConfig)
+	v, err := view.NewView(dir, s.server.ViewConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return v
 }

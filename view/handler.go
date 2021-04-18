@@ -4,19 +4,13 @@ import (
 	"log"
 	"net/http"
 
-	"go.sancus.dev/cms/errors"
+	"go.sancus.dev/cms"
 )
 
 func (v *View) Handler(w http.ResponseWriter, r *http.Request) error {
-	var path string
 
-	if v.config.GetRoutePath != nil {
-		path = v.config.GetRoutePath(r)
-	} else {
-		path = r.URL.Path
-	}
-
+	path := v.config.GetRoutePath(r)
 	log.Printf("%T.Handler: %s", v, path)
 
-	return errors.ErrNotFound
+	return cms.ErrNotFound
 }
