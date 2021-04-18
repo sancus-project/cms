@@ -11,7 +11,7 @@ type Directory struct {
 	fullpath string
 	data     os.Directory
 	cache    os.Directory
-	root     cms.Server
+	root     cms.Directory
 }
 
 func (d *Directory) Path() string {
@@ -26,6 +26,10 @@ func (d *Directory) MkdirAll(path string) (cms.Directory, error) {
 	}
 
 	return d.root.MkdirAll(path)
+}
+
+func (s *Server) Path() string {
+	return "/"
 }
 
 func (s *Server) mkdirAll(path string) (*Directory, error) {
@@ -58,6 +62,10 @@ func (s *Server) mkdirAll(path string) (*Directory, error) {
 func (s *Server) MkdirAll(path string) (cms.Directory, error) {
 	d, err := s.mkdirAll(path)
 	return d, err
+}
+
+func (s *Sandbox) Path() string {
+	return "/"
 }
 
 func (s *Sandbox) MkdirAll(path string) (cms.Directory, error) {

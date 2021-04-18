@@ -5,7 +5,3 @@ type Directory interface {
 
 	MkdirAll(string) (Directory, error)
 }
-
-type Server interface {
-	MkdirAll(string) (Directory, error)
-}

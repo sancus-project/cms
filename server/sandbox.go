@@ -10,7 +10,7 @@ type Sandbox struct {
 }
 
 // Spawn Sandbox from Server
-func (s *Server) Chroot(path string) (cms.Server, error) {
+func (s *Server) Chroot(path string) (cms.Directory, error) {
 	dir, err := s.MkdirAll(path)
 	if err != nil {
 		return nil, err
@@ -25,7 +25,7 @@ func (s *Server) Chroot(path string) (cms.Server, error) {
 }
 
 // Spawn Sandbox from Sandbox
-func (s *Sandbox) Chroot(path string) (cms.Server, error) {
+func (s *Sandbox) Chroot(path string) (cms.Directory, error) {
 	dir, err := s.MkdirAll(path)
 	if err != nil {
 		return nil, err

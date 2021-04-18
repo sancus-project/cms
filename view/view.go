@@ -9,10 +9,10 @@ import (
 
 type View struct {
 	config cms.ViewConfig
-	server cms.Server
+	server cms.Directory
 }
 
-func NewView(s cms.Server, cfg cms.ViewConfig) *View {
+func NewView(s cms.Directory, cfg cms.ViewConfig) *View {
 	v := &View{
 		config: cfg,
 		server: s,
