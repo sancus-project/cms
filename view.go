@@ -10,7 +10,7 @@ type Handler func(http.ResponseWriter, *http.Request) error
 type View interface {
 	http.Handler
 
-	Middleware(next http.Handler) http.Handler
+	Middleware(prefix string) func(next http.Handler) http.Handler
 	Handler(w http.ResponseWriter, r *http.Request) error
 
 	Config() *ViewConfig
