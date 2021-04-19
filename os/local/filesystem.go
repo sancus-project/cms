@@ -98,10 +98,16 @@ func NewFilesystem(ctx context.Context, root string) (registry.Filesystem, error
 }
 
 func (v *Filesystem) Close() error {
+	v.mu.Lock()
+	if v.closed {
+		v.mu.Unlock()
+		return nil
+	}
+
 	watcher := v.watcher
 	v.watcher = nil
-
 	v.closed = true
+	v.mu.Unlock()
 
 	watcher.Close()
 	v.wg.Wait()
