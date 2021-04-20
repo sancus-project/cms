@@ -3,17 +3,18 @@ package cms
 import (
 	"net/http"
 
+	"go.sancus.dev/mix/errors"
 	"go.sancus.dev/mix/types"
 )
 
 var (
-	ErrNotFound = types.ErrNotFound
+	ErrNotFound = errors.ErrNotFound
 )
 
 type (
 	Error        = types.Error
 	ErrorHandler = types.ErrorHandler
-	HandlerError = types.HandlerError
+	HandlerError = errors.HandlerError
 )
 
 // Error Handlers
