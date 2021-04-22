@@ -2,9 +2,10 @@ package errors
 
 import (
 	"go.sancus.dev/cms"
+	"go.sancus.dev/web/errors"
 )
 
 type ResourceError struct {
-	cms.HandlerError
+	errors.HandlerError
 	Resource cms.Resource
 }

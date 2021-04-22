@@ -1,13 +1,13 @@
 package errors
 
 import (
-	"go.sancus.dev/cms"
+	"go.sancus.dev/web/errors"
 )
 
 type (
-	HandlerError = cms.HandlerError
+	HandlerError = errors.HandlerError
 )
 
 var (
-	ErrNotFound = cms.ErrNotFound
+	ErrNotFound = errors.ErrNotFound
 )
