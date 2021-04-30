@@ -51,7 +51,7 @@ func (v *Middleware) MiddlewareHandler(w http.ResponseWriter, r *http.Request, n
 		}
 	}()
 
-	if err := v.Handler(w, r); err != nil {
+	if err := v.TryServeHTTP(w, r); err != nil {
 		if e, ok := err.(cms.Error); ok {
 			if e.Status() == http.StatusNotFound {
 				// 404

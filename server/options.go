@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"go.sancus.dev/cms"
+	"go.sancus.dev/web"
 )
 
 // Server Options
@@ -72,28 +73,28 @@ func SetGetResource(getResource func(context.Context) cms.Resource) ServerOption
 }
 
 // Set Server's default File editor
-func SetEditHandler(path string, handler cms.Handler) ServerOption {
+func SetEditHandler(path string, handler web.HandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.ViewConfig.SetEditHandler(path, handler)
 	})
 }
 
 // Set Server's default File manager
-func SetFilesHandler(path string, handler cms.Handler) ServerOption {
+func SetFilesHandler(path string, handler web.HandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.ViewConfig.SetFilesHandler(path, handler)
 	})
 }
 
 // Set Server's default Heartbeat handler
-func SetPingHandler(path string, handler cms.Handler) ServerOption {
+func SetPingHandler(path string, handler web.HandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.ViewConfig.SetPingHandler(path, handler)
 	})
 }
 
 // Set Server's default Sitemap handler
-func SetSitemapHandler(path string, handler cms.Handler) ServerOption {
+func SetSitemapHandler(path string, handler web.HandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.ViewConfig.SetSitemapHandler(path, handler)
 	})

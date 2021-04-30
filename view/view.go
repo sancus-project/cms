@@ -42,7 +42,7 @@ func (v *View) Middleware(prefix string) func(http.Handler) http.Handler {
 }
 
 func (v *View) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if err := v.Handler(w, r); err != nil {
+	if err := v.TryServeHTTP(w, r); err != nil {
 		v.HandleError(w, r, err)
 	}
 }
