@@ -101,17 +101,9 @@ func SetSitemapHandler(path string, handler web.HandlerFunc) ServerOption {
 }
 
 // Set Server's default error Handler
-func SetErrorHandler(handler cms.ErrorHandler) ServerOption {
+func SetErrorHandler(handler web.ErrorHandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		s.ViewConfig.ErrorHandler = handler
-		return nil
-	})
-}
-
-// Set Server's default recover Handler
-func SetPanicHandler(handler cms.PanicHandler) ServerOption {
-	return ServerOptionFunc(func(s *Server) error {
-		s.ViewConfig.PanicHandler = handler
 		return nil
 	})
 }

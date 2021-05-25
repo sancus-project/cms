@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"go.sancus.dev/cms"
+	"go.sancus.dev/web"
+	"go.sancus.dev/web/errors"
 )
 
 type Middleware struct {
@@ -46,13 +47,13 @@ func (v *Middleware) MiddlewareHandler(w http.ResponseWriter, r *http.Request, n
 	}
 
 	defer func() {
-		if rvr := recover(); rvr != nil && rvr != http.ErrAbortHandler {
-			v.HandlePanic(w, r, rvr)
+		if err := errors.Recover(); err != nil && err != http.ErrAbortHandler {
+			v.HandleError(w, r, err)
 		}
 	}()
 
 	if err := v.TryServeHTTP(w, r); err != nil {
-		if e, ok := err.(cms.Error); ok {
+		if e, ok := err.(web.Error); ok {
 			if e.Status() == http.StatusNotFound {
 				// 404
 				next.ServeHTTP(w, r)

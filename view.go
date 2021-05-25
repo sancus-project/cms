@@ -31,8 +31,7 @@ type ViewConfig struct {
 	Sitemap        string // optional per view
 	SitemapHandler web.HandlerFunc
 
-	ErrorHandler ErrorHandler
-	PanicHandler PanicHandler
+	ErrorHandler web.ErrorHandlerFunc
 
 	Index    string // default page
 	ReadOnly bool   // storage can't be modified through this View

@@ -4,13 +4,13 @@ import (
 	"log"
 	"net/http"
 
-	"go.sancus.dev/cms"
+	"go.sancus.dev/web/errors"
 )
 
 func (v *View) TryServeHTTP(w http.ResponseWriter, r *http.Request) error {
 
 	path := v.config.GetRoutePath(r)
-	log.Printf("%T.Handler: %s", v, path)
+	log.Printf("%+n: %s", errors.Here(0), path)
 
-	return cms.ErrNotFound
+	return errors.ErrNotFound
 }
