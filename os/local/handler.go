@@ -1,21 +1,26 @@
 package local
 
 import (
+	"fmt"
 	"io/fs"
 	"log"
 
 	"github.com/fsnotify/fsnotify"
 )
 
+func (v *Filesystem) String() string {
+	return fmt.Sprintf("%s: %s:%s", "go.sancus.dev/cms", "local", v.root)
+}
+
 func (v *Filesystem) handleEvent(event fsnotify.Event) {
-	log.Printf("local:%s: event:%s", v.root, event)
+	log.Printf("%v event:%s", v, event)
 }
 
 func (v *Filesystem) handleError(err error) {
-	log.Printf("local:%s: error:%s", v.root, err)
+	log.Printf("%v error:%s", v, err)
 }
 
 func (v *Filesystem) scan(f fs.DirEntry) error {
-	log.Printf("local:%s: scan:%q", v.root, f)
+	log.Printf("%v scan:%#v", v, f)
 	return nil
 }
