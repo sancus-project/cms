@@ -3,7 +3,7 @@ package utils
 import (
 	"path/filepath"
 
-	"go.sancus.dev/cms/os"
+	"go.sancus.dev/cms/os/types"
 )
 
 func ValidPath(path string) (string, error) {
@@ -24,5 +24,5 @@ func ValidPath(path string) (string, error) {
 		return s, nil
 	}
 
-	return "", os.ErrInvalid(path)
+	return "", types.ErrInvalid(path)
 }

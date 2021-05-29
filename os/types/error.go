@@ -1,4 +1,4 @@
-package os
+package types
 
 import (
 	"fmt"

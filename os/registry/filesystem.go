@@ -4,18 +4,11 @@ import (
 	"context"
 	"fmt"
 	"strings"
+
+	"go.sancus.dev/cms/os/types"
 )
 
-type Filesystem interface {
-	Root() string
-	Protocol() string
-
-	MkdirAll(string) (Directory, error)
-
-	Close() error
-}
-
-type FilesystemConstructor func(context.Context, string) (Filesystem, error)
+type FilesystemConstructor func(context.Context, string) (types.Filesystem, error)
 
 var filesystems map[string]FilesystemConstructor
 
@@ -31,7 +24,7 @@ func RegisterFilesystem(prefix string, f FilesystemConstructor) error {
 	return nil
 }
 
-func NewFilesystem(ctx context.Context, root string) (Filesystem, error) {
+func NewFilesystem(ctx context.Context, root string) (types.Filesystem, error) {
 	for k, f := range filesystems {
 		if len(k) > 0 {
 			if strings.HasPrefix(root, k) {

@@ -5,6 +5,7 @@ import (
 
 	"go.sancus.dev/cms"
 	"go.sancus.dev/cms/os"
+	"go.sancus.dev/cms/os/types"
 )
 
 // CMS Server
@@ -14,13 +15,13 @@ type Server struct {
 	Root  string
 	Cache string
 
-	root  os.Filesystem
-	cache os.Filesystem
+	root  types.Filesystem
+	cache types.Filesystem
 }
 
 func (s *Server) Connect(ctx context.Context) error {
 	if s.root != nil || s.cache != nil {
-		return os.EBUSY
+		return types.EBUSY
 	}
 
 	root, err := os.NewFilesystem(ctx, s.Root)

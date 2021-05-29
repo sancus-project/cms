@@ -3,14 +3,15 @@ package server
 import (
 	"go.sancus.dev/cms"
 	"go.sancus.dev/cms/os"
+	"go.sancus.dev/cms/os/types"
 	"go.sancus.dev/cms/os/utils"
 )
 
 type Directory struct {
 	path     string
 	fullpath string
-	data     os.Directory
-	cache    os.Directory
+	data     types.Directory
+	cache    types.Directory
 	root     cms.Directory
 }
 

@@ -8,6 +8,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 
 	"go.sancus.dev/cms/os/registry"
+	"go.sancus.dev/cms/os/types"
 )
 
 type Filesystem struct {
@@ -23,7 +24,7 @@ type Filesystem struct {
 	closed bool
 }
 
-func NewFilesystem(ctx context.Context, root string) (registry.Filesystem, error) {
+func NewFilesystem(ctx context.Context, root string) (types.Filesystem, error) {
 
 	// validate root
 	root, err := CleanRoot(root)

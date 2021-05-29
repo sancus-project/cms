@@ -4,7 +4,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"go.sancus.dev/cms/os/registry"
+	"go.sancus.dev/cms/os/types"
 )
 
 const (
@@ -20,7 +20,7 @@ func (d Directory) Path() string {
 	return d.path
 }
 
-func (fs *Filesystem) MkdirAll(path string) (registry.Directory, error) {
+func (fs *Filesystem) MkdirAll(path string) (types.Directory, error) {
 	var err error
 	var mode = NewDirectoryMode
 
