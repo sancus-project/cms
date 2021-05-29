@@ -48,7 +48,7 @@ func (v *Middleware) MiddlewareHandler(w http.ResponseWriter, r *http.Request, n
 
 	defer func() {
 		if err := errors.Recover(); err != nil && err != http.ErrAbortHandler {
-			v.HandleError(w, r, err)
+			v.config.ErrorHandler(w, r, err)
 		}
 	}()
 
@@ -60,7 +60,7 @@ func (v *Middleware) MiddlewareHandler(w http.ResponseWriter, r *http.Request, n
 				return
 			}
 		}
-		v.HandleError(w, r, err)
+		v.config.ErrorHandler(w, r, err)
 	}
 }
 
