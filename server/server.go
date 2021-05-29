@@ -9,10 +9,10 @@ import (
 
 // CMS Server
 type Server struct {
+	cms.ViewConfig
+
 	Root  string
 	Cache string
-
-	ViewConfig cms.ViewConfig
 
 	root  os.Filesystem
 	cache os.Filesystem

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"go.sancus.dev/web"
+	"go.sancus.dev/web/errors"
 )
 
 type View interface {
@@ -20,7 +21,7 @@ type View interface {
 type ViewConfig struct {
 	GetRoutePath func(r *http.Request) string
 	GetUser      func(ctx context.Context) User
-	SetResource  func(ctx context.Context, res Resource) (context.Context, error)
+	SetResource  func(ctx context.Context, res Resource) context.Context
 	GetResource  func(ctx context.Context) Resource
 
 	Edit           string // per resource
@@ -36,6 +37,37 @@ type ViewConfig struct {
 
 	Index    string // default page
 	ReadOnly bool   // storage can't be modified through this View
+}
+
+func (c *ViewConfig) SetGetRoutePath(f func(*http.Request) string) error {
+	if f == nil {
+		f = DefaultGetRoutePath
+	}
+	c.GetRoutePath = f
+	return nil
+}
+
+func (c *ViewConfig) SetGetUser(f func(ctx context.Context) User) error {
+	if f == nil {
+		f = DefaultGetUser
+	}
+	c.GetUser = f
+	return nil
+}
+
+func (c *ViewConfig) SetSetResource(f func(ctx context.Context, res Resource) context.Context) error {
+	if f == nil {
+		f = DefaultSetResource
+	}
+	c.SetResource = f
+	return nil
+}
+
+func (c *ViewConfig) SetGetResource(f func(ctx context.Context) Resource) error {
+	if f == nil {
+		f = DefaultGetResource
+	}
+	return nil
 }
 
 // Set View's File Editor
@@ -91,5 +123,34 @@ func (c *ViewConfig) SetSitemapHandler(path string, handler web.HandlerFunc) err
 
 	c.Sitemap = path
 	c.SitemapHandler = handler
+	return nil
+}
+
+func (c *ViewConfig) SetErrorHandler(f web.ErrorHandlerFunc) error {
+	if f == nil {
+		f = errors.HandleError
+	}
+	c.ErrorHandler = f
+	return nil
+}
+
+func (c *ViewConfig) SetIndexPage(index string) error {
+	c.Index = index
+	return nil
+}
+
+// Defaults
+func (c *ViewConfig) SetDefaults() error {
+	c.SetGetRoutePath(c.GetRoutePath)
+	c.SetGetUser(c.GetUser)
+	c.SetSetResource(c.SetResource)
+	c.SetGetResource(c.GetResource)
+
+	c.SetEditHandler(c.Edit, c.EditHandler)
+	c.SetFilesHandler(c.Files, c.FilesHandler)
+	c.SetPingHandler(c.Ping, c.PingHandler)
+	c.SetSitemapHandler(c.Sitemap, c.SitemapHandler)
+
+	c.SetErrorHandler(c.ErrorHandler)
 	return nil
 }

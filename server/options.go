@@ -20,13 +20,6 @@ func (f ServerOptionFunc) ApplyOption(s *Server) error {
 }
 
 // Set ViewConfig.GetUser
-func (s *Server) SetGetUser(getUser func(context.Context) cms.User) error {
-	if s != nil {
-		s.ViewConfig.GetUser = getUser
-	}
-	return nil
-}
-
 func SetGetUser(getUser func(context.Context) cms.User) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.SetGetUser(getUser)
@@ -34,13 +27,6 @@ func SetGetUser(getUser func(context.Context) cms.User) ServerOption {
 }
 
 // Set ViewConfig.GetRoutePath
-func (s *Server) SetGetRoutePath(getRoutePath func(r *http.Request) string) error {
-	if s != nil {
-		s.ViewConfig.GetRoutePath = getRoutePath
-	}
-	return nil
-}
-
 func SetGetRoutePath(getRoutePath func(r *http.Request) string) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
 		return s.SetGetRoutePath(getRoutePath)
@@ -48,61 +34,57 @@ func SetGetRoutePath(getRoutePath func(r *http.Request) string) ServerOption {
 }
 
 // Set ViewConfig.SetResource
-func SetSetResource(setResource func(context.Context, cms.Resource) (context.Context, error)) ServerOption {
+func SetSetResource(setResource func(context.Context, cms.Resource) context.Context) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
-		s.ViewConfig.SetResource = setResource
-		return nil
+		return s.SetSetResource(setResource)
 	})
 }
 
 // Set ViewConfig.GetResource
 func SetGetResource(getResource func(context.Context) cms.Resource) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
-		s.ViewConfig.GetResource = getResource
-		return nil
+		return s.SetGetResource(getResource)
 	})
 }
 
 // Set Server's default File editor
 func SetEditHandler(path string, handler web.HandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
-		return s.ViewConfig.SetEditHandler(path, handler)
+		return s.SetEditHandler(path, handler)
 	})
 }
 
 // Set Server's default File manager
 func SetFilesHandler(path string, handler web.HandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
-		return s.ViewConfig.SetFilesHandler(path, handler)
+		return s.SetFilesHandler(path, handler)
 	})
 }
 
 // Set Server's default Heartbeat handler
 func SetPingHandler(path string, handler web.HandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
-		return s.ViewConfig.SetPingHandler(path, handler)
+		return s.SetPingHandler(path, handler)
 	})
 }
 
 // Set Server's default Sitemap handler
 func SetSitemapHandler(path string, handler web.HandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
-		return s.ViewConfig.SetSitemapHandler(path, handler)
+		return s.SetSitemapHandler(path, handler)
 	})
 }
 
 // Set Server's default error Handler
 func SetErrorHandler(handler web.ErrorHandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
-		s.ViewConfig.ErrorHandler = handler
-		return nil
+		return s.SetErrorHandler(handler)
 	})
 }
 
 // Set Server's default resource for a given directory
 func SetIndexPage(index string) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {
-		s.ViewConfig.Index = index
-		return nil
+		return s.SetIndexPage(index)
 	})
 }

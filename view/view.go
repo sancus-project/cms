@@ -25,16 +25,7 @@ func NewView(s cms.Directory, cfg cms.ViewConfig) (cms.View, error) {
 }
 
 func (v *View) SetDefaults() error {
-	cfg := &v.config
-
-	// GetRoutePath
-	if cfg.GetRoutePath == nil {
-		cfg.GetRoutePath = func(r *http.Request) string {
-			return r.URL.Path
-		}
-	}
-
-	return nil
+	return v.config.SetDefaults()
 }
 
 func (v *View) Middleware(prefix string) func(http.Handler) http.Handler {
