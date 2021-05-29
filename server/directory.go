@@ -39,6 +39,15 @@ func (d *Directory) Chdir(path string) (cms.Directory, error) {
 	return d.root.Chdir(path)
 }
 
+func (d *Directory) Open(path string) (cms.Resource, error) {
+	path, err := utils.ValidPath(os.Join(d.path, path))
+	if err != nil {
+		return nil, err
+	}
+
+	return d.root.Open(path)
+}
+
 func (s *Server) Path() string {
 	return "/"
 }
@@ -105,6 +114,15 @@ func (s *Server) Chdir(path string) (cms.Directory, error) {
 	return s.chdir(path)
 }
 
+func (s *Server) Open(path string) (cms.Resource, error) {
+	path, err := utils.ValidPath(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, os.ErrNotExist
+}
+
 func (s *Sandbox) Path() string {
 	return "/"
 }
@@ -145,4 +163,14 @@ func (s *Sandbox) Chdir(path string) (cms.Directory, error) {
 	d.root = s
 
 	return d, nil
+}
+
+func (s *Sandbox) Open(path string) (cms.Resource, error) {
+	path, err := utils.ValidPath(path)
+	if err != nil {
+		return nil, err
+	}
+
+	// ask Server for the resource
+	return s.server.Open(os.Join(s.root.Path(), path))
 }
