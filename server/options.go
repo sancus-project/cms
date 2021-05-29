@@ -13,19 +13,10 @@ type ServerOption interface {
 	ApplyOption(*Server) error
 }
 
-type serverOption struct {
-	apply func(*Server) error
-}
+type ServerOptionFunc func(*Server) error
 
-func (opt serverOption) ApplyOption(s *Server) error {
-	if opt.apply != nil {
-		return opt.apply(s)
-	}
-	return nil
-}
-
-func ServerOptionFunc(apply func(*Server) error) ServerOption {
-	return &serverOption{apply: apply}
+func (f ServerOptionFunc) ApplyOption(s *Server) error {
+	return f(s)
 }
 
 // Set ViewConfig.GetUser
