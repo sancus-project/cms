@@ -1,24 +1,18 @@
 package view
 
 import (
-	"log"
-	"net/http"
-
-	"go.sancus.dev/web/errors"
+	"go.sancus.dev/cms"
+	"go.sancus.dev/web"
 )
 
-func (v *View) TryServeHTTP(w http.ResponseWriter, r *http.Request) error {
-
-	path := v.config.GetRoutePath(r)
-	log.Printf("%+n: %s", errors.Here(0), path)
-
-	return errors.ErrNotFound
+func (v *View) pageFilesDirectory(d cms.Directory) (web.Handler, bool) {
+	return nil, false
 }
 
-func (v *View) PageInfo(r *http.Request) (interface{}, bool) {
+func (v *View) pageServeResource(r cms.Resource) (web.Handler, bool) {
+	return nil, false
+}
 
-	path := v.config.GetRoutePath(r)
-	log.Printf("%+n: %s", errors.Here(0), path)
-
+func (v *View) pageEditResource(r cms.Resource) (web.Handler, bool) {
 	return nil, false
 }
