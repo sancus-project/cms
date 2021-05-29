@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strings"
 
-	"go.sancus.dev/cms"
 	"go.sancus.dev/web"
 	"go.sancus.dev/web/errors"
 )
@@ -51,8 +50,13 @@ func (v *View) pagePing(path string) (web.Handler, bool) {
 func (v *View) pageFiles(path string) (web.Handler, bool) {
 	if s0 := v.config.Files; s0 != "" {
 		if s1 := strings.TrimSuffix(path, s0); s1 != path {
-			if d := v.getDirectory(s1); d != nil {
-				return v.pageFilesDirectory(d)
+
+			if s1 == "" {
+				s1 = "."
+			}
+
+			if d, err := v.server.Chdir(s1); d != nil {
+				return v.pageFilesDirectory(d, err)
 			}
 		}
 	}
@@ -62,8 +66,8 @@ func (v *View) pageFiles(path string) (web.Handler, bool) {
 func (v *View) pageEdit(path string) (web.Handler, bool) {
 	if s0 := v.config.Edit; s0 != "" {
 		if s1 := strings.TrimSuffix(path, s0); s1 != path {
-			if r := v.getResource(s1); r != nil {
-				return v.pageEditResource(r)
+			if r, err := v.server.Open(s1); r != nil {
+				return v.pageEditResource(r, err)
 			}
 		}
 	}
@@ -71,16 +75,8 @@ func (v *View) pageEdit(path string) (web.Handler, bool) {
 }
 
 func (v *View) pageResource(path string) (web.Handler, bool) {
-	if r := v.getResource(path); r != nil {
-		return v.pageServeResource(r)
+	if r, err := v.server.Open(path); r != nil {
+		return v.pageServeResource(r, err)
 	}
 	return nil, false
-}
-
-func (v *View) getDirectory(path string) cms.Directory {
-	return nil
-}
-
-func (v *View) getResource(path string) cms.Resource {
-	return nil
 }
