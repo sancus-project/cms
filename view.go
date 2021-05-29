@@ -10,6 +10,7 @@ import (
 type View interface {
 	http.Handler
 	web.Handler
+	web.RouterPageInfo
 
 	Middleware(prefix string) func(next http.Handler) http.Handler
 

@@ -14,3 +14,11 @@ func (v *View) TryServeHTTP(w http.ResponseWriter, r *http.Request) error {
 
 	return errors.ErrNotFound
 }
+
+func (v *View) PageInfo(r *http.Request) (interface{}, bool) {
+
+	path := v.config.GetRoutePath(r)
+	log.Printf("%+n: %s", errors.Here(0), path)
+
+	return nil, false
+}
