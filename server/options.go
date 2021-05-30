@@ -47,6 +47,20 @@ func SetGetResource(getResource func(context.Context) cms.Resource) ServerOption
 	})
 }
 
+// Set ViewConfig.SetDirectory
+func SetSetDirectory(setDirectory func(context.Context, cms.Directory) context.Context) ServerOption {
+	return ServerOptionFunc(func(s *Server) error {
+		return s.SetSetDirectory(setDirectory)
+	})
+}
+
+// Set ViewConfig.GetDirectory
+func SetGetDirectory(getDirectory func(context.Context) cms.Directory) ServerOption {
+	return ServerOptionFunc(func(s *Server) error {
+		return s.SetGetDirectory(getDirectory)
+	})
+}
+
 // Set Server's default File editor
 func SetEditHandler(path string, handler web.HandlerFunc) ServerOption {
 	return ServerOptionFunc(func(s *Server) error {

@@ -23,6 +23,8 @@ type ViewConfig struct {
 	GetUser      func(ctx context.Context) User
 	SetResource  func(ctx context.Context, res Resource) context.Context
 	GetResource  func(ctx context.Context) Resource
+	SetDirectory func(ctx context.Context, res Directory) context.Context
+	GetDirectory func(ctx context.Context) Directory
 
 	Edit           string // per resource
 	EditHandler    web.HandlerFunc
@@ -55,6 +57,7 @@ func (c *ViewConfig) SetGetUser(f func(ctx context.Context) User) error {
 	return nil
 }
 
+// Put Resource into context.Context
 func (c *ViewConfig) SetSetResource(f func(ctx context.Context, res Resource) context.Context) error {
 	if f == nil {
 		f = DefaultSetResource
@@ -63,10 +66,30 @@ func (c *ViewConfig) SetSetResource(f func(ctx context.Context, res Resource) co
 	return nil
 }
 
+// Get Resource from context.Context
 func (c *ViewConfig) SetGetResource(f func(ctx context.Context) Resource) error {
 	if f == nil {
 		f = DefaultGetResource
 	}
+	c.GetResource = f
+	return nil
+}
+
+// Put Directory into context.Context
+func (c *ViewConfig) SetSetDirectory(f func(ctx context.Context, res Directory) context.Context) error {
+	if f == nil {
+		f = DefaultSetDirectory
+	}
+	c.SetDirectory = f
+	return nil
+}
+
+// Get Directory from context.Context
+func (c *ViewConfig) SetGetDirectory(f func(ctx context.Context) Directory) error {
+	if f == nil {
+		f = DefaultGetDirectory
+	}
+	c.GetDirectory = f
 	return nil
 }
 
@@ -145,6 +168,8 @@ func (c *ViewConfig) SetDefaults() error {
 	c.SetGetUser(c.GetUser)
 	c.SetSetResource(c.SetResource)
 	c.SetGetResource(c.GetResource)
+	c.SetSetDirectory(c.SetDirectory)
+	c.SetGetDirectory(c.GetDirectory)
 
 	c.SetEditHandler(c.Edit, c.EditHandler)
 	c.SetFilesHandler(c.Files, c.FilesHandler)

@@ -30,8 +30,20 @@ func DefaultGetResource(ctx context.Context) Resource {
 	return nil
 }
 
+func DefaultSetDirectory(ctx context.Context, dir Directory) context.Context {
+	return context.WithValue(ctx, DirectoryCtxKey, dir)
+}
+
+func DefaultGetDirectory(ctx context.Context) Directory {
+	if dir, ok := ctx.Value(DirectoryCtxKey).(Directory); ok {
+		return dir
+	}
+	return nil
+}
+
 var (
-	ResourceCtxKey = &contextKey{"Resource"}
+	ResourceCtxKey  = &contextKey{"Resource"}
+	DirectoryCtxKey = &contextKey{"Directory"}
 )
 
 // contextKey is a value for use with context.WithValue
@@ -40,5 +52,5 @@ type contextKey struct {
 }
 
 func (k *contextKey) String() string {
-	return "context value " + k.name
+	return "cms context value " + k.name
 }
