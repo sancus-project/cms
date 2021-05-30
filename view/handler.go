@@ -1,42 +1,43 @@
 package view
 
 import (
+	"log"
 	"net/http"
 
 	"go.sancus.dev/cms"
-	"go.sancus.dev/web"
 	"go.sancus.dev/web/errors"
 )
 
-func (v *View) pageNotImplemented(err error) (web.Handler, bool) {
-	if err == nil {
-		// 503 Temporarily Unavailable
-		h := &errors.HandlerError{
-			Code: http.StatusServiceUnavailable,
-		}
-		return h, true
-
-	} else if e, ok := err.(web.Error); ok {
-
-		if e.Status() == http.StatusNotFound {
-			// Not for us
-			return nil, false
-		}
-
-	}
-
-	h := errors.NewFromError(err).(web.Handler)
-	return h, true
+var ErrNotImplemented = &errors.HandlerError{
+	Code: http.StatusServiceUnavailable,
 }
 
-func (v *View) pageFilesDirectory(d cms.Directory, err error) (web.Handler, bool) {
-	return v.pageNotImplemented(err)
+type DirectoryHandler struct {
+	d cms.Directory
+	v *View
 }
 
-func (v *View) pageServeResource(r cms.Resource, err error) (web.Handler, bool) {
-	return v.pageNotImplemented(err)
+func (h DirectoryHandler) TryServeHTTP(w http.ResponseWriter, r *http.Request) error {
+	log.Println(errors.Here(0))
+	return ErrNotImplemented
 }
 
-func (v *View) pageEditResource(r cms.Resource, err error) (web.Handler, bool) {
-	return v.pageNotImplemented(err)
+type EditHandler struct {
+	r cms.Resource
+	v *View
+}
+
+func (h EditHandler) TryServeHTTP(w http.ResponseWriter, r *http.Request) error {
+	log.Println(errors.Here(0))
+	return ErrNotImplemented
+}
+
+type ResourceHandler struct {
+	r cms.Resource
+	v *View
+}
+
+func (h ResourceHandler) TryServeHTTP(w http.ResponseWriter, r *http.Request) error {
+	log.Println(errors.Here(0))
+	return ErrNotImplemented
 }

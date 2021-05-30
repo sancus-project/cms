@@ -52,11 +52,16 @@ func (v *View) pageFiles(path string) (web.Handler, bool) {
 		if s1 := strings.TrimSuffix(path, s0); s1 != path {
 
 			if s1 == "" {
-				s1 = "."
+				s1 = "/"
 			}
 
 			if d, err := v.server.Chdir(s1); d != nil {
-				return v.pageFilesDirectory(d, err)
+				if h, ok, done := v.pageCheckError(err); done {
+					return h, ok
+				}
+
+				h := &DirectoryHandler{d, v}
+				return h, true
 			}
 		}
 	}
@@ -67,7 +72,12 @@ func (v *View) pageEdit(path string) (web.Handler, bool) {
 	if s0 := v.config.Edit; s0 != "" {
 		if s1 := strings.TrimSuffix(path, s0); s1 != path {
 			if r, err := v.server.Open(s1); r != nil {
-				return v.pageEditResource(r, err)
+				if h, ok, done := v.pageCheckError(err); done {
+					return h, ok
+				}
+
+				h := &EditHandler{r, v}
+				return h, true
 			}
 		}
 	}
@@ -76,7 +86,34 @@ func (v *View) pageEdit(path string) (web.Handler, bool) {
 
 func (v *View) pageResource(path string) (web.Handler, bool) {
 	if r, err := v.server.Open(path); r != nil {
-		return v.pageServeResource(r, err)
+		if h, ok, done := v.pageCheckError(err); done {
+			return h, ok
+		}
+
+		h := &ResourceHandler{r, v}
+		return h, true
 	}
 	return nil, false
+}
+
+func (v *View) pageCheckError(err error) (web.Handler, bool, bool) {
+
+	if err != nil {
+
+		if e, ok := err.(web.Error); ok {
+
+			if e.Status() == http.StatusNotFound {
+				// PageInfo() -> nil, false
+				return nil, false, true
+			}
+
+		}
+
+		// PageInfo() -> err, true
+		h := errors.NewFromError(err).(web.Handler)
+		return h, true, true
+	}
+
+	// Carry on
+	return nil, false, false
 }
