@@ -68,5 +68,9 @@ func NewServer(root, cache string, options ...ServerOption) (*Server, error) {
 		}
 	}
 
+	if err := s.SetDefaults(); err != nil {
+		return nil, err
+	}
+
 	return s, nil
 }
