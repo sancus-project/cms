@@ -18,8 +18,10 @@ type DirectoryHandler struct {
 }
 
 func (h DirectoryHandler) TryServeHTTP(w http.ResponseWriter, r *http.Request) error {
-	log.Println(errors.Here(0))
-	return ErrNotImplemented
+	ctx := h.v.config.SetDirectory(r.Context(), h.d)
+	r = r.WithContext(ctx)
+
+	return h.v.config.FilesHandler(w, r)
 }
 
 type EditHandler struct {
@@ -28,8 +30,10 @@ type EditHandler struct {
 }
 
 func (h EditHandler) TryServeHTTP(w http.ResponseWriter, r *http.Request) error {
-	log.Println(errors.Here(0))
-	return ErrNotImplemented
+	ctx := h.v.config.SetResource(r.Context(), h.r)
+	r = r.WithContext(ctx)
+
+	return h.v.config.EditHandler(w, r)
 }
 
 type ResourceHandler struct {
