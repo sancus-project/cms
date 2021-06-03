@@ -42,6 +42,6 @@ type ResourceHandler struct {
 }
 
 func (h ResourceHandler) TryServeHTTP(w http.ResponseWriter, r *http.Request) error {
-	log.Println(errors.Here(0))
+	log.Println(errors.Here())
 	return ErrNotImplemented
 }

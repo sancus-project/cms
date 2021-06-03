@@ -11,7 +11,7 @@ import (
 
 func (v *View) pageInfo(r *http.Request) (web.Handler, bool) {
 	path := v.config.GetRoutePath(r)
-	log.Printf("%+n: %s", errors.Here(0), path)
+	log.Printf("%+n: %s", errors.Here(), path)
 
 	if p, ok := v.pageSitemap(path); ok {
 		return p, true
