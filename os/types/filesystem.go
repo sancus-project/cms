@@ -1,5 +1,9 @@
 package types
 
+import (
+	"io/fs"
+)
+
 type Filesystem interface {
 	Root() string
 	Protocol() string
@@ -11,6 +15,9 @@ type Filesystem interface {
 }
 
 type Directory interface {
+	fs.FileInfo
+	fs.DirEntry
+
 	Path() string
 
 	Chdir(string) (Directory, error)

@@ -26,3 +26,16 @@ func ValidPath(path string) (string, error) {
 
 	return "", types.ErrInvalid(path)
 }
+
+func Join(s ...string) (string, error) {
+	path := filepath.Join(s...)
+
+	if len(path) > 0 && path[0] == '/' {
+		s := filepath.Clean(path)
+		if len(s) > 0 && s[0] == '/' {
+			return s, nil
+		}
+	}
+
+	return "", types.ErrInvalid(path)
+}
