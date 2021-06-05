@@ -8,3 +8,10 @@ type Directory interface {
 
 	Open(string) (Resource, error)
 }
+
+type Server interface {
+	View(path string) View
+
+	Chdir(string) (Directory, error)
+	Chroot(string) (Directory, error)
+}
