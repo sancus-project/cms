@@ -13,5 +13,6 @@ type Server interface {
 	View(path string) View
 
 	Chdir(string) (Directory, error)
+	MkdirAll(string) (Directory, error)
 	Chroot(string) (Directory, error)
 }
