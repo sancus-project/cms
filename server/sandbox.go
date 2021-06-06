@@ -4,37 +4,43 @@ import (
 	"go.sancus.dev/cms"
 )
 
+// A Sandbox is a chroot-ed Directory
 type Sandbox struct {
-	root   cms.Directory
+	cms.Directory
+
 	server *Server
+}
+
+func (s *Server) newSandbox(root *Directory) cms.Directory {
+	return &Sandbox{
+		Directory: &Directory{
+			path:     "/",
+			fullpath: root.fullpath,
+			data:     root.data,
+			cache:    root.cache,
+		},
+		server: s,
+	}
 }
 
 // Spawn Sandbox from Server
 func (s *Server) Chroot(path string) (cms.Directory, error) {
-	dir, err := s.Chdir(path)
+	dir, err := s.chdir(path, false)
 	if err != nil {
 		return nil, err
 	}
 
-	v := &Sandbox{
-		root:   dir,
-		server: s,
-	}
-
+	v := s.newSandbox(dir)
 	return v, nil
 }
 
 // Spawn Sandbox from Sandbox
 func (s *Sandbox) Chroot(path string) (cms.Directory, error) {
-	dir, err := s.Chdir(path)
+	dir, err := s.chdir(path, false)
 	if err != nil {
 		return nil, err
 	}
 
-	v := &Sandbox{
-		root:   dir,
-		server: s.server,
-	}
-
+	v := s.server.newSandbox(dir)
 	return v, nil
 }
