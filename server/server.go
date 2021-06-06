@@ -2,6 +2,8 @@ package server
 
 import (
 	"context"
+	"io/fs"
+	"time"
 
 	"go.sancus.dev/cms"
 	"go.sancus.dev/cms/os"
@@ -17,6 +19,41 @@ type Server struct {
 
 	root  types.Filesystem
 	cache types.Filesystem
+}
+
+func (s *Server) Info() (fs.FileInfo, error) {
+	return s, nil
+}
+
+func (s *Server) Sys() interface{} {
+	return s
+}
+
+func (s *Server) IsDir() bool {
+	return true
+}
+
+func (s *Server) Name() string {
+	return "/"
+}
+
+func (s *Server) Path() string {
+	return "/"
+}
+
+func (s *Server) Size() int64 {
+	return 0
+}
+
+func (s *Server) Mode() fs.FileMode {
+	return fs.ModeDir
+}
+
+func (s *Server) Type() fs.FileMode {
+	return fs.ModeDir
+}
+func (s *Server) ModTime() time.Time {
+	return s.root.ModTime()
 }
 
 func (s *Server) Connect(ctx context.Context) error {

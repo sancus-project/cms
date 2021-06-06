@@ -1,6 +1,9 @@
 package server
 
 import (
+	"io/fs"
+	"time"
+
 	"go.sancus.dev/cms"
 	"go.sancus.dev/cms/os"
 	"go.sancus.dev/cms/os/types"
@@ -8,6 +11,7 @@ import (
 )
 
 type Directory struct {
+	name     string // relative to parent directory
 	path     string // relative to root
 	fullpath string // relative to server
 	data     types.Directory
@@ -15,8 +19,40 @@ type Directory struct {
 	root     cms.Directory
 }
 
+func (d *Directory) Name() string {
+	return d.name
+}
+
 func (d *Directory) Path() string {
 	return d.path
+}
+
+func (d *Directory) IsDir() bool {
+	return true
+}
+
+func (d *Directory) Size() int64 {
+	return 0
+}
+
+func (d *Directory) Type() fs.FileMode {
+	return fs.ModeDir
+}
+
+func (d *Directory) Mode() fs.FileMode {
+	return fs.ModeDir
+}
+
+func (d *Directory) Info() (fs.FileInfo, error) {
+	return d, nil
+}
+
+func (d *Directory) Sys() interface{} {
+	return d
+}
+
+func (d *Directory) ModTime() time.Time {
+	return d.data.ModTime()
 }
 
 func (d *Directory) MkdirAll(path string) (cms.Directory, error) {
@@ -47,10 +83,6 @@ func (d *Directory) Open(path string) (cms.Resource, error) {
 	}
 
 	return d.root.Open(path)
-}
-
-func (s *Server) Path() string {
-	return "/"
 }
 
 func (s *Server) chdir(path string, mkdir bool) (*Directory, error) {

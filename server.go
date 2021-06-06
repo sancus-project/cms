@@ -1,6 +1,13 @@
 package cms
 
+import (
+	"io/fs"
+)
+
 type Directory interface {
+	fs.DirEntry
+	fs.FileInfo
+
 	Path() string
 
 	Chdir(string) (Directory, error)
