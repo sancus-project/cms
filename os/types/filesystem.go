@@ -2,11 +2,14 @@ package types
 
 import (
 	"io/fs"
+	"time"
 )
 
 type Filesystem interface {
 	Root() string
 	Protocol() string
+
+	ModTime() time.Time
 
 	Chdir(string) (Directory, error)
 	MkdirAll(string) (Directory, error)

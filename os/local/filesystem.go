@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"sync"
+	"time"
 
 	"github.com/fsnotify/fsnotify"
 
@@ -14,6 +15,8 @@ import (
 type Filesystem struct {
 	root string
 	ctx  context.Context
+
+	modtime time.Time
 
 	// watcher
 	watcher *fsnotify.Watcher
@@ -114,6 +117,10 @@ func (v *Filesystem) Close() error {
 	v.wg.Wait()
 
 	return nil
+}
+
+func (v *Filesystem) ModTime() time.Time {
+	return v.modtime
 }
 
 func (v *Filesystem) Root() string {
