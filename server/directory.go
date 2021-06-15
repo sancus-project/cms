@@ -127,7 +127,7 @@ func (s *Server) MkdirAll(path string) (cms.Directory, error) {
 }
 
 func (s *Server) Chdir(path string) (cms.Directory, error) {
-	return s.chdir(path, true)
+	return s.chdir(path, false)
 }
 
 func (s *Server) Open(path string) (cms.Resource, error) {
