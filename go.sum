@@ -2,9 +2,9 @@ github.com/armon/go-radix v1.0.0/go.mod h1:ufUuZ+zHj4x4TnLV4JWEpy2hxWSpsRywHrMgI
 github.com/felixge/httpsnoop v1.0.2/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
 github.com/fsnotify/fsnotify v1.4.9 h1:hsms1Qyu0jgnwNXIxa+/V/PDsU6CfLf6CNO8H7IWoS4=
 github.com/fsnotify/fsnotify v1.4.9/go.mod h1:znqG4EE+3YCdAaPaxE2ZRY/06pZUdp0tY4IgpuI1SZQ=
-go.sancus.dev/core v0.0.1 h1:eApmtkQq0jd/E0LFu0hH6Hi8nOITp0hbawVRVyjqCuA=
-go.sancus.dev/core v0.0.1/go.mod h1:Gg1aTz1Hv0s0PNtfO0WZ4qMPMDzP0/DoyccfCho73yw=
-go.sancus.dev/web v0.24.0 h1:8uH4CPxw2Xae6DoL3R/MVoHZVymJPBH6iGOi8jhjv4M=
-go.sancus.dev/web v0.24.0/go.mod h1:oaZBJIAZy7IH+bvojQBB9HEpMgpSmcvmrQNmEG5Ky9U=
+go.sancus.dev/core v0.1.2 h1:S42T+gCXxCbT4Yukxvi4mLIf46Lp1Ukym+4wpavWec8=
+go.sancus.dev/core v0.1.2/go.mod h1:Gg1aTz1Hv0s0PNtfO0WZ4qMPMDzP0/DoyccfCho73yw=
+go.sancus.dev/web v0.26.1 h1:w9t/sT1e+fIpRr7GY7d8Bn0LHiYSrnJ1DE1dKkTV0WE=
+go.sancus.dev/web v0.26.1/go.mod h1:A4Czb54hX7NqrQ/9iXn3oM2xFl6Dgbug82vqgG5eShc=
 golang.org/x/sys v0.0.0-20191005200804-aed5e4c7ecf9 h1:L2auWcuQIvxz9xSEqzESnV/QN/gNRXNApHi3fYwl2w0=
 golang.org/x/sys v0.0.0-20191005200804-aed5e4c7ecf9/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
